@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Curies</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }  
+        button {
+            padding: 10px 20px;
+            background-color: #0b5ed7;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        #output {
+            margin-top: 20px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Make Curies Room Service for students</h1>
+    <button onclick="getMessage()">Get Message</button>
+    <div id="output">Click the button to see API response</div>
+
+    <script>
+        async function getMessage() {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('output').innerText = "❌ Error: " + error.message;
+            }
+        }
+    </script>
+</body>
+</html> 

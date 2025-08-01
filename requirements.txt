@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+sqladmin
+sqlalchemy
+redis
+python-dotenv
