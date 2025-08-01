@@ -11,10 +11,39 @@
     </style>
 </head>
 <body>
-    <h1>User Information</h1>
-    <div class="user-info">
-        <p>Name: {{ name }}</p>
-        <p>Email: {{ email }}</p>
-    </div>
+    <h1>User Registration</h1>
+    <form id="userForm" class="user-info">
+        <label>Name: <input type="text" id="name" name="name" required></label><br><br>
+        <label>Email: <input type="email" id="email" name="email" required></label><br><br>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="result" class="user-info" style="display:none;"></div>
+    <script>
+        document.getElementById('userForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const resultDiv = document.getElementById('result');
+            try {
+                const response = await fetch('/user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email })
+                });
+                const data = await response.json();
+                resultDiv.style.display = 'block';
+                if (response.ok) {
+                    resultDiv.innerHTML = `<strong>Success!</strong> User saved.<br>Name: ${data.name}<br>Email: ${data.email}`;
+                } else {
+                    resultDiv.innerHTML = `<strong>Error:</strong> ${data.detail || 'Unknown error'}`;
+                }
+            } catch (error) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
+            }
+        });
+    </script>
 </body>
 </html>

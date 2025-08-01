@@ -1,19 +1,15 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
-from fastapi import Jinja2Templates
-from routers.users import router as users 
-from contextlib import asynccontextmanager
+from fastapi.templating import Jinja2Templates
 
-@asynccontextmanager
-async def lifespan(app :FastAPI):
-    print("Starting up the app...")
-    yield
-    print("Shutting down the app...")
+from routers.users import router as user
 
-app = FastAPI(lifespan=lifespan)
-app.include_router(users)
-
+app = FastAPI(title ="Make Curies")
+templates = Jinja2Templates(directory = "templates")
+@app.get("/",response_class = HTMLResponse)
+async def user_home(request : Request):
+    return templates.TemplateResponse("user.html",{"request":request})
 #@app.get("/")
-#async def read_root():
-#    return {"message": "Hello, World!"}
-templates=Jinja2Templates(directory = "")
+#async def home():
+#    return {"Message":"Welcome to Make Curies!"}
+app.include_router(user)
