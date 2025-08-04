@@ -1,16 +1,11 @@
-from fastapi import FastAPI,Request, HTTPException,Depends
-from pydantic import BaseModel
-from typing import List,Annotated 
+from fastapi import FastAPI, Depends
+from routers.room_booking import router as room_booking_router
+from sqlalchemy.orm import Session
+from app.settings.database import get_db, engine
+from app.settings.model import RoomBookingModel, Base
 
+app = FastAPI(title="First Web app", version="0.1.0")
+app.include_router(room_booking_router)
 
-class Room_Booking(BaseModel):
-    room_id: int
-    user_id: int
-    start_time: str
-    end_time: str
-class Room_Booking_response(BaseModel):
-    room_id: int
-    user_id: int
-    start_time: str
-    end_time: str
-    status: str
+Base.metadata.create_all(bind=engine)
+

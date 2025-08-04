@@ -1,7 +1,15 @@
-from sqlmodel import SQLModel, create_engine
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker,declarative_base
 
-DATABASE_URL = "postgresql://postgres:DataBase123@127.0.0.1:5432/postgres"
-engine=create_engine(DATABASE_URL, echo=True)
+URL="postgresql://postgres:DataBase123@127.0.0.1:5432/Room_Booking"
+engine = create_engine(URL, echo = True)
+Base = declarative_base()
+SessionLocal = sessionmaker(bind = engine,autoflush=False,autocommit=False)
 
-def create_db():
-    SQLModel.metadata.create_all(engine)
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+        
+    finally:
+        db.close()
